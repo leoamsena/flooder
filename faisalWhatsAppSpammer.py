@@ -14,7 +14,7 @@ count = 21
 pageCount = 0
 
 
-def getImages(search="horse -woman -food -gift"):
+def getImages(search="planet"):
     try:
         global pageCount
         global imagesJson
@@ -45,7 +45,7 @@ def errOcc(mess):
     p = input("Enter Any thing to continue... ")
 
 
-def faisalMessage(message, fileName):
+def faisalMessage(fileName):
     messBox = driver.find_element_by_class_name('_3u328')
 
     messBox.send_keys(
@@ -71,14 +71,16 @@ def faisalMessage(message, fileName):
 def getMessage():
     try:
         global count
-        getImages()
-
+        
+        search = str(input("Search: "))
         times = int(input("Number of times u want to send: "))
         delay = int(input("Set Delay for messages in secs: "))
+
+        getImages(search)
         for x in range(0, times):
             try:
                 if (count >= 20):
-                    getImages()
+                    getImages(search)
 
                 url = imagesJson["hits"][count]["largeImageURL"]
                 resp = requests.get(url, stream=True)
@@ -89,7 +91,7 @@ def getMessage():
                 del resp
                 print(url)
                 count += 1
-                faisalMessage("", fileName)
+                faisalMessage(fileName)
                 time.sleep(delay)
             except Exception as e:
                 errOcc(
